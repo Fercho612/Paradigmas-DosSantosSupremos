@@ -9,7 +9,7 @@ import equipamiento.DanzaDeLaMuerte;
 import equipamiento.EquipamientoInvalidoException;
 import equipamiento.VeloDeBanshee;
 
-class TestEquipamiento {
+class EquipamientoTest {
 
 	@Test
 	void testEquiparMismaCategoriaDeEquipamiento() {

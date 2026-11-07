@@ -2,6 +2,7 @@ package combatientes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import equipamiento.Equipamiento;
 import equipamiento.EquipamientoInvalidoException;
@@ -65,14 +66,20 @@ public abstract class Combatiente {
 
 	@Override
 	public int hashCode() {
-		return Integer.hashCode(identificador);
+		return Objects.hash(Integer.valueOf(identificador));
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-
+		if (this == obj)
+			return true;
+		
+		if (obj == null)
+			return false;
+		
+		if (!(obj instanceof Combatiente))
+			return false;
+		
 		Combatiente other = (Combatiente) obj;
 		return identificador == other.identificador;
 	}
