@@ -2,6 +2,7 @@
 
 Trabajo Práctico N° 2 - Paradigmas de Programación (2026)  
 **Desarrollado por:** Equipo Kappa  
+**Documentación:** [Leer Consigna Completa del TP](./docs/consigna.md)  
 **Fecha de Entrega:** 20 de Noviembre de 2026
 
 ---
