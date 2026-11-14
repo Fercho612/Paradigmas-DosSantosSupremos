@@ -6,5 +6,5 @@ public class DanzaDeLaMuerte extends Equipamiento{
 	}
 
 	@Override
-	public int bonusDanio() { return 50; }
+	public int bonusDmg() { return 50; }
 }

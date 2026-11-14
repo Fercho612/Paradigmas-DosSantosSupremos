@@ -9,11 +9,11 @@ import equipamiento.EquipamientoInvalidoException;
 
 public abstract class Combatiente {
 	private final int identificador;
-	protected final String nombre;
+	private final String nombre;
 	private final int vidaMax, energiaMax;
 	private int vidaAct, energiaAct;
 	private final List<Equipamiento> equipamiento = new ArrayList<>();
-	private final int MAX_EQUIPAMIENTOS = 3;
+	private static final int MAX_EQUIPAMIENTOS = 3;
 	
 	protected Combatiente(int identificador, String nombre, int vidaMax, int energiaMax) {
 		this.identificador = identificador;
@@ -25,15 +25,15 @@ public abstract class Combatiente {
 	}
 
 	public void equipar(Equipamiento objeto) {
-		if (equipamiento.size() >= MAX_EQUIPAMIENTOS) {
+		if (this.equipamiento.size() >= MAX_EQUIPAMIENTOS) {
 			throw new EquipamientoInvalidoException("No puede llevar más de " + MAX_EQUIPAMIENTOS + " objetos");
 		}
-		for (Equipamiento e : equipamiento) {
+		for (Equipamiento e : this.equipamiento) {
 			if (e.getCategoria() == objeto.getCategoria()) {
 				throw new EquipamientoInvalidoException("Ya lleva un objeto de categoría " + objeto.getCategoria());
 			}
 		}
-		equipamiento.add(objeto);
+		this.equipamiento.add(objeto);
 	}
 
 	public void quitar(Equipamiento objeto) {
@@ -51,7 +51,7 @@ public abstract class Combatiente {
 	public int getVidaMaxima() {
 		int total = this.vidaMax;
 		for (Equipamiento e : this.equipamiento) {
-			total += e.bonusVidaMaxima();
+			total += e.bonusVidaMax();
 		}
 		return total;
 	}
@@ -59,7 +59,7 @@ public abstract class Combatiente {
 	public int getEnergiaMaxima() {
 		int total = this.energiaMax;
 		for (Equipamiento e : this.equipamiento) {
-			total += e.bonusEnergiaMaxima();
+			total += e.bonusEnergiaMax();
 		}
 		return total;
 	}

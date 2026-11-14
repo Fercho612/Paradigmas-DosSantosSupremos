@@ -6,5 +6,5 @@ public class VeloDeBanshee extends Equipamiento{
 	}
 	
 	@Override
-	public int reduccionDanio() { return 20; }
+	public int reduccionDmg() { return 20; }
 }

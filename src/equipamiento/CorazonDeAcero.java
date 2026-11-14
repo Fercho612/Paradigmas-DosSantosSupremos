@@ -6,5 +6,5 @@ public class CorazonDeAcero extends Equipamiento{
 	}
 	
 	@Override
-	public int bonusVidaMaxima() { return 100; }
+	public int bonusVidaMax() { return 300; }
 }

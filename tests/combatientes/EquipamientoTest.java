@@ -4,10 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import equipamiento.EquipamientoInvalidoException;
 import equipamiento.CorazonDeAcero;
 import equipamiento.DanzaDeLaMuerte;
-import equipamiento.EquipamientoInvalidoException;
 import equipamiento.VeloDeBanshee;
+import equipamiento.AnilloDeDoran;
 
 class EquipamientoTest {
 
@@ -27,7 +28,7 @@ class EquipamientoTest {
 		dante.equipar(new CorazonDeAcero());
 		dante.equipar(new VeloDeBanshee());
 		assertThrows(EquipamientoInvalidoException.class, 
-				() -> dante.equipar(new DanzaDeLaMuerte()));
+				() -> dante.equipar(new AnilloDeDoran()));
 		assertEquals(3, dante.getEquipamiento().size());
 	}
 	

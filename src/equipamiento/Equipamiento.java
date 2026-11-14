@@ -1,6 +1,6 @@
 package equipamiento;
 
-public class Equipamiento {
+public abstract class Equipamiento {
     private final String nombre;
     private final Categoria categoria;
 
@@ -9,10 +9,10 @@ public class Equipamiento {
         this.categoria = categoria;
     }
 
-    public int bonusDanio() { return 0; }
-    public int reduccionDanio() { return 0; }
-    public int bonusEnergiaMaxima() { return 0; }
-    public int bonusVidaMaxima() { return 0; }
+    public int bonusDmg() { return 0; }
+    public int reduccionDmg() { return 0; }
+    public int bonusEnergiaMax() { return 0; }
+    public int bonusVidaMax() { return 0; }
 
     public String getNombre() { return nombre; }
     public Categoria getCategoria() { return categoria; }

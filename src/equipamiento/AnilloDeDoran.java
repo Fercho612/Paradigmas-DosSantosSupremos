@@ -6,5 +6,5 @@ public class AnilloDeDoran extends Equipamiento{
 	}
 	
 	@Override
-	public int bonusEnergiaMaxima() { return 50; }
+	public int bonusEnergiaMax() { return 50; }
 }
