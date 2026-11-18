@@ -137,10 +137,12 @@ public abstract class Combatiente {
 	 * tiene suficiente energía (con modificador de clase) y usos restantes.
 	 */
 	public boolean puedeUsarTecnica(Tecnica t) {
+		if (!tecnicas.contains(t)) {
+			return false;
+		}
 		int costoReal = modificarCostoEnergia(t.getCostoEnergia());
 		return energiaAct >= costoReal && getUsosRestantes(t) > 0;
 	}
-
 	// ==================== Estado de combate ====================
 
 	public boolean estaFueraDeCombate() {
@@ -210,9 +212,8 @@ public abstract class Combatiente {
 
 	// ==================== Energía ====================
 
-	/** Gasta la cantidad indicada de energía. */
 	public void gastarEnergia(int cantidad) {
-		this.energiaAct -= cantidad;
+		this.energiaAct = Math.max(0, this.energiaAct - cantidad);
 	}
 
 	/** Recupera {@value #ENERGIA_POR_ASALTO} puntos de energía (sin exceder el máximo). */
@@ -256,11 +257,12 @@ public abstract class Combatiente {
 		return objetivo.recibirDanio(danioModificado);
 	}
 
-	/**
-	 * Ejecuta una técnica contra el objetivo.
-	 * Verifica que pueda usarla, gasta energía, registra el uso y la ejecuta.
-	 */
 	public void ejecutarTecnica(Tecnica t, Combatiente objetivo) {
+		if (!puedeUsarTecnica(t)) {
+			throw new IllegalStateException(
+					nombre + " no puede ejecutar la técnica '" + t.getNombre()
+					+ "' (sin energía, sin usos o no la conoce)");
+		}
 		int costoReal = modificarCostoEnergia(t.getCostoEnergia());
 		gastarEnergia(costoReal);
 		registrarUsoTecnica(t);

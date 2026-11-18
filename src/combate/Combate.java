@@ -27,8 +27,6 @@ public class Combate {
 	/** Cantidad máxima de asaltos antes de resolver por vida total. */
 	private static final int LIMITE_ASALTOS = 30;
 
-	/** Daño del ataque básico (referencia local para documentación). */
-	private static final int DANIO_BASICO = 50;
 
 	// ─── Campos ─────────────────────────────────────────────────────────
 	/** Pareja con menor identificador (actúa primera). */
