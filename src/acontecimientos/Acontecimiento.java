@@ -10,18 +10,8 @@ package acontecimientos;
  */
 public abstract class Acontecimiento {
 
-	/**
-	 * @return el texto que describe el acontecimiento
-	 */
 	public abstract String getDescripcion();
 
-	/**
-	 * Permite que el Cronista registre los datos que necesita para la tabla
-	 * de posiciones. Por defecto no hace nada; lo sobrescriben los
-	 * acontecimientos que aportan datos a la tabla.
-	 *
-	 * @param cronista el cronista que registra el acontecimiento
-	 */
 	public void registrarEn(CronistaDeLaSecta cronista) {
 	}
 

@@ -50,10 +50,7 @@ public class Combate {
 	/** Indica si el combate ya fue ejecutado y finalizado. */
 	private boolean finalizado;
 
-	/** Ronda del torneo en la que se juega el combate. */
 	private final int ronda;
-
-	/** Interesados en los acontecimientos del combate. */
 	private final List<Interesado> interesados;
 
 	// ─── Clase interna: Acción ──────────────────────────────────────────
@@ -90,15 +87,6 @@ public class Combate {
 		this(p1, p2, 0, new ArrayList<>());
 	}
 
-	/**
-	 * Crea un nuevo combate dentro de una ronda del torneo, que comunica sus
-	 * acontecimientos a los interesados.
-	 *
-	 * @param p1 primera pareja
-	 * @param p2 segunda pareja
-	 * @param ronda ronda del torneo en la que se juega
-	 * @param interesados interesados en los acontecimientos del combate
-	 */
 	public Combate(Pareja p1, Pareja p2, int ronda, List<Interesado> interesados) {
 		// Ordenar por identificador: la menor va primero
 		if (p1.getIdentificador() <= p2.getIdentificador()) {
@@ -172,12 +160,6 @@ public class Combate {
 		return finalizar(pareja2);
 	}
 
-	/**
-	 * Marca el combate como finalizado y comunica el resultado.
-	 *
-	 * @param ganadora la pareja ganadora
-	 * @return la pareja ganadora
-	 */
 	private Pareja finalizar(Pareja ganadora) {
 		this.ganadora = ganadora;
 		this.finalizado = true;
@@ -367,15 +349,6 @@ public class Combate {
 		}
 	}
 
-	// ─── Acontecimientos ────────────────────────────────────────────────
-	/**
-	 * Comunica la acción realizada y, si el objetivo quedó fuera de combate,
-	 * su eliminación.
-	 *
-	 * @param ejecutor quien realizó la acción
-	 * @param nombreAccion nombre del ataque básico o de la técnica
-	 * @param objetivo quien recibió la acción
-	 */
 	private void notificarAccion(Combatiente ejecutor, String nombreAccion, Combatiente objetivo) {
 		notificar(new AccionRealizada(asaltoActual, ejecutor.getNombre(), nombreAccion,
 				objetivo.getNombre(), objetivo.getVidaActual()));

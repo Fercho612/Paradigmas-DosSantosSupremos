@@ -28,37 +28,15 @@ import combatientes.Combatiente;
  */
 public class Torneo {
 
-	// ─── Campos ─────────────────────────────────────────────────────────
-	/** Parejas en orden de inscripción. */
 	private final List<Pareja> parejas = new ArrayList<>();
-
-	/** Combatientes ya inscriptos, para evitar duplicados. */
 	private final Set<Combatiente> inscriptos = new HashSet<>();
-
-	/** Interesados en los acontecimientos del torneo. */
 	private final List<Interesado> interesados = new ArrayList<>();
-
-	/** Pareja campeona ({@code null} si el torneo no se jugó). */
 	private Pareja campeona;
 
-	// ─── Interesados ────────────────────────────────────────────────────
-	/**
-	 * Registra un interesado en los acontecimientos del torneo.
-	 *
-	 * @param interesado el interesado a registrar
-	 */
 	public void agregarInteresado(Interesado interesado) {
 		interesados.add(interesado);
 	}
 
-	// ─── Inscripción ────────────────────────────────────────────────────
-	/**
-	 * Inscribe una pareja en el torneo.
-	 *
-	 * @param pareja la pareja a inscribir
-	 * @throws InscripcionInvalidaException si la pareja ya está inscripta o
-	 *         alguno de sus integrantes ya está inscripto
-	 */
 	public void inscribir(Pareja pareja) {
 		if (parejas.contains(pareja)) {
 			throw new InscripcionInvalidaException(
@@ -74,21 +52,12 @@ public class Torneo {
 		inscriptos.addAll(pareja.getIntegrantes());
 	}
 
-	// ─── Desarrollo del torneo ──────────────────────────────────────────
-	/**
-	 * Juega el torneo completo, ronda por ronda, hasta que queda una sola
-	 * pareja, y la proclama campeona.
-	 *
-	 * @return la pareja campeona
-	 * @throws InscripcionInvalidaException si no hay 4 u 8 parejas inscriptas
-	 */
 	public Pareja iniciar() {
 		if (parejas.size() != 4 && parejas.size() != 8) {
 			throw new InscripcionInvalidaException(
 					"El torneo solo puede jugarse con 4 u 8 parejas (hay " + parejas.size() + ")");
 		}
 
-		// Los usos de técnicas se cuentan por torneo
 		for (Combatiente c : inscriptos) {
 			c.reiniciarParaTorneo();
 		}
@@ -117,18 +86,10 @@ public class Torneo {
 		}
 	}
 
-	// ─── Getters públicos ───────────────────────────────────────────────
-
-	/**
-	 * @return la pareja campeona, o {@code null} si el torneo no se jugó
-	 */
 	public Pareja getCampeona() {
 		return campeona;
 	}
 
-	/**
-	 * @return copia no modificable de las parejas, en orden de inscripción
-	 */
 	public List<Pareja> getParejas() {
 		return List.copyOf(parejas);
 	}

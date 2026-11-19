@@ -11,13 +11,6 @@ public class AccionRealizada extends Acontecimiento {
 	private final String objetivo;
 	private final int vidaObjetivo;
 
-	/**
-	 * @param asalto número de asalto
-	 * @param ejecutor nombre de quien realiza la acción
-	 * @param accion nombre de la acción ("Ataque básico" o la técnica)
-	 * @param objetivo nombre de quien recibe la acción
-	 * @param vidaObjetivo vida del objetivo después de la acción
-	 */
 	public AccionRealizada(int asalto, String ejecutor, String accion,
 			String objetivo, int vidaObjetivo) {
 		this.asalto = asalto;

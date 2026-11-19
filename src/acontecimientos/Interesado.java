@@ -7,10 +7,5 @@ package acontecimientos;
  */
 public interface Interesado {
 
-	/**
-	 * Recibe un acontecimiento en el momento en que ocurre.
-	 *
-	 * @param acontecimiento el hecho ocurrido
-	 */
 	void notificar(Acontecimiento acontecimiento);
 }

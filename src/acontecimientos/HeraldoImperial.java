@@ -13,11 +13,6 @@ public class HeraldoImperial implements Interesado {
 		System.out.println(acontecimiento.getDescripcion());
 	}
 
-	/**
-	 * Presenta la tabla de posiciones, en el orden recibido.
-	 *
-	 * @param tabla las posiciones ya ordenadas
-	 */
 	public void presentarTabla(List<Posicion> tabla) {
 		System.out.println("Tabla de posiciones:");
 		for (int i = 0; i < tabla.size(); i++) {
