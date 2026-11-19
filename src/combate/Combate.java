@@ -1,8 +1,15 @@
 package combate;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import acontecimientos.Acontecimiento;
+import acontecimientos.AccionRealizada;
+import acontecimientos.Eliminacion;
+import acontecimientos.InicioCombate;
+import acontecimientos.Interesado;
+import acontecimientos.ResultadoCombate;
 import combatientes.Combatiente;
 import tecnicas.Tecnica;
 import tecnicas.TipoTecnica;
@@ -43,6 +50,9 @@ public class Combate {
 	/** Indica si el combate ya fue ejecutado y finalizado. */
 	private boolean finalizado;
 
+	private final int ronda;
+	private final List<Interesado> interesados;
+
 	// ─── Clase interna: Acción ──────────────────────────────────────────
 	/**
 	 * Representa la acción que un combatiente ejecutará en su turno.
@@ -74,6 +84,10 @@ public class Combate {
 	 * @param p2 segunda pareja
 	 */
 	public Combate(Pareja p1, Pareja p2) {
+		this(p1, p2, 0, new ArrayList<>());
+	}
+
+	public Combate(Pareja p1, Pareja p2, int ronda, List<Interesado> interesados) {
 		// Ordenar por identificador: la menor va primero
 		if (p1.getIdentificador() <= p2.getIdentificador()) {
 			this.pareja1 = p1;
@@ -90,6 +104,8 @@ public class Combate {
 		this.ganadora = null;
 		this.asaltoActual = 0;
 		this.finalizado = false;
+		this.ronda = ronda;
+		this.interesados = interesados;
 	}
 
 	// ─── Método principal ───────────────────────────────────────────────
@@ -114,6 +130,10 @@ public class Combate {
 	 * @return la {@link Pareja} ganadora
 	 */
 	public Pareja ejecutar() {
+		notificar(new InicioCombate(ronda,
+				pareja1.getIdentificador(), nombresDe(pareja1),
+				pareja2.getIdentificador(), nombresDe(pareja2)));
+
 		for (asaltoActual = 1; asaltoActual <= LIMITE_ASALTOS; asaltoActual++) {
 
 			// ── Fase de recuperación de energía ──
@@ -123,27 +143,30 @@ public class Combate {
 			// ── Turno de pareja1 ──
 			ejecutarTurno(pareja1, pareja2);
 			if (pareja2.estaEliminada()) {
-				ganadora = pareja1;
-				finalizado = true;
-				return ganadora;
+				return finalizar(pareja1);
 			}
 
 			// ── Turno de pareja2 ──
 			ejecutarTurno(pareja2, pareja1);
 			if (pareja1.estaEliminada()) {
-				ganadora = pareja2;
-				finalizado = true;
-				return ganadora;
+				return finalizar(pareja2);
 			}
 		}
 
 		// ── Límite de asaltos alcanzado: desempate por vida total ──
 		if (pareja1.getVidaTotal() >= pareja2.getVidaTotal()) {
-			ganadora = pareja1; // En empate de vida, gana la de menor ID
-		} else {
-			ganadora = pareja2;
+			return finalizar(pareja1); // En empate de vida, gana la de menor ID
 		}
-		finalizado = true;
+		return finalizar(pareja2);
+	}
+
+	private Pareja finalizar(Pareja ganadora) {
+		this.ganadora = ganadora;
+		this.finalizado = true;
+		Pareja perdedora = getPerdedora();
+		notificar(new ResultadoCombate(ronda,
+				ganadora.getIdentificador(), ganadora.getVidaTotal(),
+				perdedora.getIdentificador(), perdedora.getVidaTotal()));
 		return ganadora;
 	}
 
@@ -303,6 +326,7 @@ public class Combate {
 		if (accion.esAtaqueBasico()) {
 			Combatiente objetivo = elegirObjetivo(parejaRival);
 			ejecutor.ejecutarAtaqueBasico(objetivo);
+			notificarAccion(ejecutor, "Ataque básico", objetivo);
 		} else {
 			Tecnica t = accion.tecnica;
 
@@ -316,11 +340,31 @@ public class Combate {
 			if (t.getTipo() == TipoTecnica.OFENSIVA) {
 				Combatiente objetivo = elegirObjetivo(parejaRival);
 				t.ejecutar(ejecutor, objetivo);
+				notificarAccion(ejecutor, t.getNombre(), objetivo);
 			} else {
 				// DEFENSIVA o RECUPERACION: se aplica sobre sí mismo
 				t.ejecutar(ejecutor, ejecutor);
+				notificarAccion(ejecutor, t.getNombre(), ejecutor);
 			}
 		}
+	}
+
+	private void notificarAccion(Combatiente ejecutor, String nombreAccion, Combatiente objetivo) {
+		notificar(new AccionRealizada(asaltoActual, ejecutor.getNombre(), nombreAccion,
+				objetivo.getNombre(), objetivo.getVidaActual()));
+		if (objetivo.estaFueraDeCombate()) {
+			notificar(new Eliminacion(asaltoActual, objetivo.getNombre()));
+		}
+	}
+
+	private void notificar(Acontecimiento acontecimiento) {
+		for (Interesado interesado : interesados) {
+			interesado.notificar(acontecimiento);
+		}
+	}
+
+	private String nombresDe(Pareja pareja) {
+		return pareja.getIntegrante1().getNombre() + " y " + pareja.getIntegrante2().getNombre();
 	}
 
 	// ─── Selección de objetivo ──────────────────────────────────────────
