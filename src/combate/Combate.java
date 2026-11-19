@@ -181,16 +181,24 @@ public class Combate {
 	 * @param defensora pareja que defiende en este turno
 	 */
 	private void ejecutarTurno(Pareja atacante, Pareja defensora) {
-		// getIntegrantesEnPie() devuelve la lista ordenada por ID ascendente
-		List<Combatiente> enPie = atacante.getIntegrantesEnPie();
-		for (Combatiente combatiente : enPie) {
-			if (defensora.estaEliminada()) {
-				break;
-			}
-			Accion accion = elegirAccion(combatiente, atacante, defensora);
-			ejecutarAccion(combatiente, atacante, accion, defensora);
-		}
-	}
+    List<Combatiente> enPie = atacante.getIntegrantesEnPie();
+
+    for (Combatiente combatiente : enPie) {
+        if (defensora.estaEliminada()) {
+            break;
+        }
+
+        combatiente.aplicarEfectosTemporales();
+
+        // Si el veneno lo dejó fuera de combate, no actúa.
+        if (combatiente.estaFueraDeCombate()) {
+            continue;
+        }
+
+        Accion accion = elegirAccion(combatiente, atacante, defensora);
+        ejecutarAccion(combatiente, atacante, accion, defensora);
+    }
+}
 
 	// ─── Selección de acción (IA determinística) ────────────────────────
 	/**

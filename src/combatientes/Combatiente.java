@@ -9,6 +9,7 @@ import java.util.Objects;
 import equipamiento.Equipamiento;
 import equipamiento.EquipamientoInvalidoException;
 import tecnicas.Tecnica;
+import efectosTemporales.EfectoTemporal;
 
 /**
  * Clase abstracta base para todos los combatientes del torneo.
@@ -27,6 +28,7 @@ public abstract class Combatiente {
 	private Map<Tecnica, Integer> usosTecnicas = new HashMap<>();
 	private boolean fueraDeCombate = false;
 	private int reduccionDmgTemporal = 0;
+	private List<EfectoTemporal> efectosTemporales = new ArrayList<>();
 
 	private static final int MAX_USOS_POR_TECNICA = 5;
 	private static final int ENERGIA_POR_ASALTO = 15;
@@ -209,6 +211,16 @@ public abstract class Combatiente {
 	public void curar(int cantidad) {
 		this.vidaAct = Math.min(this.vidaAct + cantidad, getVidaMaxima());
 	}
+	public void agregarEfecto(EfectoTemporal efecto) {
+    efectosTemporales.add(efecto);
+}
+
+public void aplicarEfectosTemporales() {
+    for (EfectoTemporal efecto : efectosTemporales) {
+        efecto.aplicar();
+    }
+    efectosTemporales.clear();
+}
 
 	// ==================== Energía ====================
 
