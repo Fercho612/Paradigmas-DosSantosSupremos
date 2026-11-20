@@ -82,6 +82,7 @@ public final class CatalogoTecnicas {
 	public static final Tecnica MEDITACION_DEL_INMORTAL = new Tecnica(
 			"Meditación del Inmortal", COSTO_MEDITACION, TipoTecnica.RECUPERACION,
 			(ejecutor, objetivo) -> ejecutor.curar(CURA_MEDITACION));
+	
 	public static final Tecnica VENENO = new Tecnica(
 	        "Veneno", COSTO_VENENO, TipoTecnica.OFENSIVA,
 	        (ejecutor, objetivo) -> objetivo.agregarEfecto(
