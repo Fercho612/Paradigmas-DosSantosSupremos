@@ -88,4 +88,22 @@ class EfectoTemporalTest {
 
         assertEquals(vidaInicial + 40, ejecutor.getVidaActual());
     }
+    @Test
+    void noPermiteAgregarDosEfectosActivos() {
+        Combatiente combatiente = new CreadorCombatientes().crear(
+                TipoCombatiente.HECHICERO_DEL_VACIO,
+                CatalogoEscuelas.PALACIO_DEL_VACIO, "Combatiente");
+
+        int vidaInicial = combatiente.getVidaActual();
+
+        combatiente.agregarEfecto(
+                new EfectoTemporal(combatiente, new EstadoVeneno()));
+
+        combatiente.agregarEfecto(
+                new EfectoTemporal(combatiente, new EstadoRegeneracion()));
+
+        combatiente.aplicarEfectosTemporales();
+
+        assertEquals(vidaInicial - 40, combatiente.getVidaActual());
+    }
 }

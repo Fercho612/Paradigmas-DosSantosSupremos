@@ -6,4 +6,8 @@ public class EstadoInactivo implements EstadoEfecto {
     public void aplicar(EfectoTemporal efecto) {
 
     }
+    @Override
+    public boolean estaActivo() {
+        return false;
+    }
 }
