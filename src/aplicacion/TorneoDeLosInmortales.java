@@ -9,6 +9,9 @@ import combate.Pareja;
 import combatientes.Combatiente;
 import combatientes.CreadorCombatientes;
 import combatientes.TipoCombatiente;
+import efectosTemporales.EfectoTemporal;
+import efectosTemporales.EstadoRegeneracion;
+import efectosTemporales.EstadoVeneno;
 import equipamiento.AnilloDelArcangel;
 import equipamiento.BaculoDelVacio;
 import equipamiento.Categoria;
@@ -27,7 +30,7 @@ public class TorneoDeLosInmortales {
 	private static final HeraldoImperial HERALDO = new HeraldoImperial();
 
 	private static final Escuela SECTA_DEL_LOTO_CARMESI = new Escuela(
-			"Secta del Loto Carmesi",
+			"Secta del Loto Carmesí",
 			List.of(CatalogoTecnicas.RUGIDO_DE_LA_BESTIA_PRIMORDIAL,
 					CatalogoTecnicas.MEDITACION_DEL_INMORTAL),
 			List.of(new AnilloDelArcangel(), new RostroEspiritual()));
@@ -43,6 +46,7 @@ public class TorneoDeLosInmortales {
 		escenarioTorneoDeOchoParejas();
 		escenarioReglasDelEquipamiento();
 		escenarioInscripcionesInvalidas();
+		escenarioEfectosTemporales();
 	}
 
 	private static void escenarioTorneoCompleto() {
@@ -52,7 +56,7 @@ public class TorneoDeLosInmortales {
 		Combatiente aurelio = creador.crear(TipoCombatiente.CULTIVADOR_DE_LA_ESPADA,
 				CatalogoEscuelas.ESPADA_CELESTIAL, "Aurelio");
 		Combatiente nebula = creador.crear(TipoCombatiente.HECHICERO_DEL_VACIO,
-				CatalogoEscuelas.PALACIO_DEL_VACIO, "Nebula");
+				CatalogoEscuelas.PALACIO_DEL_VACIO, "Nébula");
 		Combatiente kael = creador.crear(TipoCombatiente.MONJE_DEL_CUERPO_CELESTIAL,
 				CatalogoEscuelas.MONASTERIO_DEL_CUERPO_DORADO, "Kael");
 		Combatiente darian = creador.crear(TipoCombatiente.CULTIVADOR_DE_LA_ESPADA,
@@ -125,19 +129,19 @@ public class TorneoDeLosInmortales {
 
 		HERALDO.separar();
 		kael.restaurarParaCombate();
-		anunciarEstado("recupera la vida al maximo", kael);
+		anunciarEstado("recupera la vida al máximo", kael);
 		kael.quitar(objetoDeCategoria(kael, Categoria.ARMADURA));
 		anunciarEstado("se quita la armadura", kael);
 	}
 
 	private static void escenarioInscripcionesInvalidas() {
-		HERALDO.anunciarEscenario("Escenario 4: inscripciones invalidas");
+		HERALDO.anunciarEscenario("Escenario 4: inscripciones inválidas");
 
 		CreadorCombatientes creador = new CreadorCombatientes();
 		Combatiente aurelio = creador.crear(TipoCombatiente.CULTIVADOR_DE_LA_ESPADA,
 				CatalogoEscuelas.ESPADA_CELESTIAL, "Aurelio");
 		Combatiente nebula = creador.crear(TipoCombatiente.HECHICERO_DEL_VACIO,
-				CatalogoEscuelas.PALACIO_DEL_VACIO, "Nebula");
+				CatalogoEscuelas.PALACIO_DEL_VACIO, "Nébula");
 		Combatiente kael = creador.crear(TipoCombatiente.MONJE_DEL_CUERPO_CELESTIAL,
 				CatalogoEscuelas.MONASTERIO_DEL_CUERPO_DORADO, "Kael");
 
@@ -149,6 +153,33 @@ public class TorneoDeLosInmortales {
 
 		HERALDO.separar();
 		intentarIniciar(torneo);
+	}
+
+	private static void escenarioEfectosTemporales() {
+		HERALDO.anunciarEscenario("Escenario 5: efectos temporales (veneno y regeneración)");
+
+		Combatiente aurelio = new CreadorCombatientes().crear(TipoCombatiente.CULTIVADOR_DE_LA_ESPADA,
+				CatalogoEscuelas.ESPADA_CELESTIAL, "Aurelio");
+		anunciarVida("empieza con", aurelio);
+
+		HERALDO.separar();
+		aurelio.agregarEfecto(new EfectoTemporal(aurelio, new EstadoVeneno()));
+		HERALDO.anunciar("Aurelio es envenenado y llega un segundo veneno con el primero activo (se ignora)");
+		aurelio.agregarEfecto(new EfectoTemporal(aurelio, new EstadoVeneno()));
+		aurelio.aplicarEfectosTemporales();
+		anunciarVida("en su turno sufre un solo veneno", aurelio);
+		aurelio.aplicarEfectosTemporales();
+		anunciarVida("en el turno siguiente no sufre nada, el veneno terminó", aurelio);
+
+		HERALDO.separar();
+		aurelio.agregarEfecto(new EfectoTemporal(aurelio, new EstadoRegeneracion()));
+		aurelio.aplicarEfectosTemporales();
+		anunciarVida("recibe Regeneración, cura 40 y vuelve a su máximo", aurelio);
+	}
+
+	private static void anunciarVida(String momento, Combatiente combatiente) {
+		HERALDO.anunciar(combatiente.getNombre() + " " + momento + ": vida "
+				+ combatiente.getVidaActual() + "/" + combatiente.getVidaMaxima());
 	}
 
 	private static void inscribirPareja(Torneo torneo, CreadorCombatientes creador,
@@ -192,7 +223,7 @@ public class TorneoDeLosInmortales {
 				return objeto;
 			}
 		}
-		throw new IllegalStateException(combatiente.getNombre() + " no lleva un objeto de categoria " + categoria);
+		throw new IllegalStateException(combatiente.getNombre() + " no lleva un objeto de categoría " + categoria);
 	}
 
 	private static void anunciarEstado(String momento, Combatiente combatiente) {
