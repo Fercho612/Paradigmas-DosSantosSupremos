@@ -245,6 +245,7 @@ public void aplicarEfectosTemporales() {
 		this.energiaAct = getEnergiaMaxima();
 		this.fueraDeCombate = false;
 		this.reduccionDmgTemporal = 0;
+		this.efectosTemporales.clear();
 	}
 
 	/**

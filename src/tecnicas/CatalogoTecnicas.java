@@ -1,6 +1,9 @@
 package tecnicas;
 
 import combatientes.Combatiente;
+import efectosTemporales.EfectoTemporal;
+import efectosTemporales.EstadoVeneno;
+import efectosTemporales.EstadoRegeneracion;
 
 /**
  * Catálogo con las cinco técnicas base del torneo.
@@ -54,6 +57,8 @@ public final class CatalogoTecnicas {
 	private static final int COSTO_MEDITACION = 50;
 	private static final int CURA_MEDITACION = 150;
 
+	private static final int COSTO_VENENO = 40;
+	private static final int COSTO_REGENERACION = 40;
 	// ─── Técnicas ───────────────────────────────────────────────────────
 	public static final Tecnica CORTE_DE_LOS_MIL_AMANECERES = new Tecnica(
 			"Corte de los Mil Amaneceres", COSTO_CORTE, TipoTecnica.OFENSIVA,
@@ -77,7 +82,15 @@ public final class CatalogoTecnicas {
 	public static final Tecnica MEDITACION_DEL_INMORTAL = new Tecnica(
 			"Meditación del Inmortal", COSTO_MEDITACION, TipoTecnica.RECUPERACION,
 			(ejecutor, objetivo) -> ejecutor.curar(CURA_MEDITACION));
+	public static final Tecnica VENENO = new Tecnica(
+	        "Veneno", COSTO_VENENO, TipoTecnica.OFENSIVA,
+	        (ejecutor, objetivo) -> objetivo.agregarEfecto(
+	                new EfectoTemporal(objetivo, new EstadoVeneno())));
 
+	public static final Tecnica REGENERACION = new Tecnica(
+	        "Regeneración", COSTO_REGENERACION, TipoTecnica.RECUPERACION,
+	        (ejecutor, objetivo) -> ejecutor.agregarEfecto(
+	                new EfectoTemporal(ejecutor, new EstadoRegeneracion())));
 	private CatalogoTecnicas() {
 		// Clase de utilidad: no se instancia.
 	}

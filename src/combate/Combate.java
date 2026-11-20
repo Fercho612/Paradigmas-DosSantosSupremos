@@ -14,6 +14,7 @@ import combatientes.Combatiente;
 import tecnicas.Tecnica;
 import tecnicas.TipoTecnica;
 
+
 /**
  * Representa un combate entre dos {@link Pareja}s dentro del sistema de torneo.
  * <p>
@@ -192,8 +193,9 @@ public class Combate {
 
         // Si el veneno lo dejó fuera de combate, no actúa.
         if (combatiente.estaFueraDeCombate()) {
-            continue;
-        }
+    notificar(new Eliminacion(asaltoActual, combatiente.getNombre()));
+    continue;
+}
 
         Accion accion = elegirAccion(combatiente, atacante, defensora);
         ejecutarAccion(combatiente, atacante, accion, defensora);

@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import combatientes.*;
 import tecnicas.*;
+import efectosTemporales.EfectoTemporal;
+import efectosTemporales.EstadoVeneno;
+import efectosTemporales.EfectoTemporal;
+import efectosTemporales.EstadoRegeneracion;
 
 class CombateTest {
 
@@ -323,4 +327,25 @@ class CombateTest {
 		c2.setTecnicas(List.of(muro, meditacion, corte));
 		return new Pareja(idPareja, c1, c2);
 	}
+	@Test
+	void venenoSeAplicaAutomaticamenteAlComenzarElTurno() {
+	    Combatiente envenenado = new CultivadorDeLaEspada(1, "Envenenado");
+	    Combatiente companero = new CultivadorDeLaEspada(2, "Compañero");
+	    Combatiente rival1 = new MonjeDelCuerpoCelestial(3, "Rival1");
+	    Combatiente rival2 = new MonjeDelCuerpoCelestial(4, "Rival2");
+
+	    Pareja propia = new Pareja(1, envenenado, companero);
+	    Pareja rival = new Pareja(2, rival1, rival2);
+
+	    envenenado.agregarEfecto(
+	            new EfectoTemporal(envenenado, new EstadoVeneno()));
+
+	    int vidaInicial = envenenado.getVidaActual();
+
+	    Combate combate = new Combate(propia, rival);
+	    combate.ejecutar();
+
+	    assertTrue(envenenado.getVidaActual() <= vidaInicial - 40);
+	}
+
 }

@@ -27,14 +27,16 @@ public final class CatalogoEscuelas {
 	public static final Escuela PALACIO_DEL_VACIO = new Escuela(
 			"Palacio del Vacío",
 			List.of(CatalogoTecnicas.DOMINIO_DE_LA_NADA,
-					CatalogoTecnicas.CORTE_DE_LOS_MIL_AMANECERES),
+					CatalogoTecnicas.CORTE_DE_LOS_MIL_AMANECERES,
+					CatalogoTecnicas.VENENO),
 			List.of(new AnilloDeDoran()));
 
 	/** Resistencia, defensa y recuperación. */
 	public static final Escuela MONASTERIO_DEL_CUERPO_DORADO = new Escuela(
 			"Monasterio del Cuerpo Dorado",
 			List.of(CatalogoTecnicas.MURO_DEL_CUERPO_DORADO,
-					CatalogoTecnicas.MEDITACION_DEL_INMORTAL),
+					CatalogoTecnicas.MEDITACION_DEL_INMORTAL,
+			        CatalogoTecnicas.REGENERACION),
 			List.of(new CorazonDeAcero(), new VeloDeBanshee()));
 
 	private CatalogoEscuelas() {
