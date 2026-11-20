@@ -52,6 +52,16 @@ public class Torneo {
 		inscriptos.addAll(pareja.getIntegrantes());
 	}
 
+	/**
+	 * Inscribe una pareja nueva formada por los dos combatientes indicados. El
+	 * identificador se asigna solo, según el orden de inscripción (1, 2, 3...).
+	 */
+	public Pareja inscribir(Combatiente primero, Combatiente segundo) {
+		Pareja pareja = new Pareja(parejas.size() + 1, primero, segundo);
+		inscribir(pareja);
+		return pareja;
+	}
+
 	public Pareja iniciar() {
 		if (parejas.size() != 4 && parejas.size() != 8) {
 			throw new InscripcionInvalidaException(
