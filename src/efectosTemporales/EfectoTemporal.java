@@ -46,4 +46,4 @@ public class EfectoTemporal {
     public boolean estaActivo() {
         return estado.estaActivo();
     }
-}
+}
