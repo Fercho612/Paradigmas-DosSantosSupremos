@@ -13,6 +13,19 @@ public class HeraldoImperial implements Interesado {
 		System.out.println(acontecimiento.getDescripcion());
 	}
 
+	public void anunciarEscenario(String titulo) {
+		System.out.println();
+		System.out.println("=== " + titulo + " ===");
+	}
+
+	public void anunciar(String mensaje) {
+		System.out.println(mensaje);
+	}
+
+	public void separar() {
+		System.out.println();
+	}
+
 	public void presentarTabla(List<Posicion> tabla) {
 		System.out.println("Tabla de posiciones:");
 		for (int i = 0; i < tabla.size(); i++) {

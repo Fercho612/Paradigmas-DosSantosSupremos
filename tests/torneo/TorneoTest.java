@@ -2,6 +2,8 @@ package torneo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import acontecimientos.CronistaDeLaSecta;
@@ -10,6 +12,10 @@ import combatientes.*;
 import escuelas.CatalogoEscuelas;
 
 class TorneoTest {
+
+	private static final int PRIMER_IDENTIFICADOR = 1;
+	private static final int SEGUNDO_IDENTIFICADOR = 2;
+	private static final int UNA_PAREJA = 1;
 
 	// ===== Inscripciones duplicadas se rechazan =====
 
@@ -34,6 +40,53 @@ class TorneoTest {
 		Pareja conRepetido = new Pareja(2, primera.getIntegrante1(), otro);
 
 		assertThrows(InscripcionInvalidaException.class, () -> torneo.inscribir(conRepetido));
+	}
+
+	// ===== El identificador de la pareja se asigna al inscribirla =====
+
+	@Test
+	void inscribirDosCombatientesAsignaIdentificadoresCorrelativos() {
+		// Arrange
+		CreadorCombatientes creador = new CreadorCombatientes();
+		Torneo torneo = new Torneo();
+
+		// Act
+		Pareja primera = torneo.inscribir(nuevoCombatiente(creador, "Uno"), nuevoCombatiente(creador, "Dos"));
+		Pareja segunda = torneo.inscribir(nuevoCombatiente(creador, "Tres"), nuevoCombatiente(creador, "Cuatro"));
+
+		// Assert
+		assertEquals(PRIMER_IDENTIFICADOR, primera.getIdentificador());
+		assertEquals(SEGUNDO_IDENTIFICADOR, segunda.getIdentificador());
+	}
+
+	@Test
+	void inscribirDosCombatientesDejaALaParejaInscripta() {
+		// Arrange
+		CreadorCombatientes creador = new CreadorCombatientes();
+		Torneo torneo = new Torneo();
+		Combatiente uno = nuevoCombatiente(creador, "Uno");
+		Combatiente dos = nuevoCombatiente(creador, "Dos");
+
+		// Act
+		Pareja pareja = torneo.inscribir(uno, dos);
+
+		// Assert
+		assertEquals(List.of(pareja), torneo.getParejas());
+		assertEquals(List.of(uno, dos), pareja.getIntegrantes());
+	}
+
+	@Test
+	void inscribirDosCombatientesConUnoYaInscriptoSeRechaza() {
+		// Arrange
+		CreadorCombatientes creador = new CreadorCombatientes();
+		Torneo torneo = new Torneo();
+		Combatiente repetido = nuevoCombatiente(creador, "Repetido");
+		torneo.inscribir(repetido, nuevoCombatiente(creador, "Otro"));
+		Combatiente nuevo = nuevoCombatiente(creador, "Nuevo");
+
+		// Act + Assert
+		assertThrows(InscripcionInvalidaException.class, () -> torneo.inscribir(repetido, nuevo));
+		assertEquals(UNA_PAREJA, torneo.getParejas().size());
 	}
 
 	// ===== Cantidad de parejas inválida se rechaza =====
@@ -109,6 +162,11 @@ class TorneoTest {
 			torneo.inscribir(crearPareja(creador, i));
 		}
 		return torneo;
+	}
+
+	private Combatiente nuevoCombatiente(CreadorCombatientes creador, String nombre) {
+		return creador.crear(TipoCombatiente.MONJE_DEL_CUERPO_CELESTIAL,
+				CatalogoEscuelas.MONASTERIO_DEL_CUERPO_DORADO, nombre);
 	}
 
 	private Pareja crearPareja(CreadorCombatientes creador, int idPareja) {
