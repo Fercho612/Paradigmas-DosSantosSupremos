@@ -212,8 +212,15 @@ public abstract class Combatiente {
 		this.vidaAct = Math.min(this.vidaAct + cantidad, getVidaMaxima());
 	}
 	public void agregarEfecto(EfectoTemporal efecto) {
-    efectosTemporales.add(efecto);
-}
+	    for (EfectoTemporal existente : efectosTemporales) {
+	        if (existente.estaActivo()) {
+	            return;
+	        }
+	    }
+
+	    efectosTemporales.add(efecto);
+	}
+
 
 public void aplicarEfectosTemporales() {
     for (EfectoTemporal efecto : efectosTemporales) {

@@ -347,5 +347,4 @@ class CombateTest {
 
 	    assertTrue(envenenado.getVidaActual() <= vidaInicial - 40);
 	}
-
 }

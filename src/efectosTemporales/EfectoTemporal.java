@@ -23,4 +23,7 @@ public class EfectoTemporal {
     public void finalizar() {
         estado = new EstadoInactivo();
     }
+    public boolean estaActivo() {
+        return estado.estaActivo();
+    }
 }
